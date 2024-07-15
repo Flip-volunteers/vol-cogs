@@ -54,10 +54,18 @@ class pincog(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def pinmsg(self, ctx, message_id: int):
+    async def pinmsg(self, ctx, message_id):
         """Pin a message by its ID"""
         if not await self.is_pinner(ctx.author):
             return await ctx.send("You are not authorized for pinning.")
+        if "discord.com/channels/" in message_id:
+            try:
+                parts = message_id.split('/')
+                message_id = parts[-1]
+            except IndexError:
+                return await ctx.send("Invalid link")
+        elif type(message_id) != int:
+            return await ctx.send("Improper format, use message link or ID.")
         try:
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
