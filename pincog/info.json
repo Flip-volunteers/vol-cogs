@@ -1,6 +1,6 @@
 {
     "author" : ["volunteers"],
-    "install_msg" : "[p]help",
+    "install_msg" : "Pincog installed!\nSee [p]help pincog for commands",
     "name" : "pincog",
     "disabled" : false,
     "short" : "Pins messages using bot commands",
