@@ -64,6 +64,8 @@ class pincog(commands.Cog):
                 message_id = parts[-1]
             except IndexError:
                 return await ctx.send("Invalid link")
+        elif message_id not int:
+            return await ctx.send("Improper format, use message link or ID.")
         try:
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
