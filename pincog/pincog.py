@@ -39,7 +39,6 @@ class pincog(commands.Cog):
         data = await self.config.guild(ctx.guild).all()
         if data["pin_role"] == [] or data["pin_role"] == None:
             return await ctx.send("No role set")
-        await ctx.send(f"{data['pin_role']} and {type(data['pin_role'])}")
         pinner_role = ctx.guild.get_role(data['pin_role'])
         msg = ("Pinrole is: {role}".format(role=pinner_role.mention if pinner_role else ("None")))
         await ctx.maybe_send_embed(msg)
