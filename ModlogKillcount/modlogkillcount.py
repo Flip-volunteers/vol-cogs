@@ -10,7 +10,7 @@ class ModlogKillcount(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @checks.admin_or_permissions(ban_members=True)
+    @checks.mod_or_permissions(ban_members=True)
     async def killcount(self, ctx):
         """Gets the killcount on the server"""
         moderators_killcount = {}
