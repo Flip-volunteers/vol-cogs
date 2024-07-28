@@ -25,9 +25,6 @@ class ModlogKillcount(commands.Cog):
                 moderators_killcount[log.moderator.name][action_type] += 1
 
         output_text = ''
+        await ctx.send("Killcount stats:")
         for mod in moderators_killcount:
-            for act in moderators_killcount[mod]:
-                output_text += mod + " has issued a total of "+str(moderators_killcount[mod][act]) +" "+  act + '\n'
-            await ctx.send(output_text)
-            output_text='' 
-        await ctx.send("sunmute = server unmute, smute = server mute, softban = kick & wipe messages")
+            await ctx.send(f"{mod}: {moderators_killcount[mod][ban]}")
