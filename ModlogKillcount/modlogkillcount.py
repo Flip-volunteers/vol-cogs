@@ -32,3 +32,4 @@ class ModlogKillcount(commands.Cog):
      
 
         await ctx.send(output_text)
+        await ctx.send("sunmute = server unmute, smute = server mute, softban = kick & wipe messages")
