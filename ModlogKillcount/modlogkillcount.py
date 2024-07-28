@@ -27,4 +27,4 @@ class ModlogKillcount(commands.Cog):
         output_text = ''
         await ctx.send("Killcount stats:")
         for mod in moderators_killcount:
-            await ctx.send(f"{mod}: {moderators_killcount[mod][action_type]}")
+            await ctx.send(f"{mod}: {moderators_killcount[mod][action_type]} {action_type}")
