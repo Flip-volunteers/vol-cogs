@@ -64,8 +64,8 @@ class pincog(commands.Cog):
                 message_id = parts[-1]
             except IndexError:
                 return await ctx.send("Invalid link")
-        # discord message ID's should always be 18 in length
-        elif len(message_id) != 18:
+        # discord message ID's should always be 19 in length
+        elif len(message_id) < 19:
             return await ctx.send(f"Got incorrect ID length, check formatting.\n {len(message_id)} {message_id}")
         try:
             message = await ctx.channel.fetch_message(message_id)
