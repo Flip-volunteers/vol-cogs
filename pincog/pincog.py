@@ -75,13 +75,15 @@ class pincog(commands.Cog):
             await ctx.send(f"message {message_id} pinned")
         except discord.NotFound as e:
             await ctx.send("Message not found.")
-            logger.exception("got %s", e)
+            logger.debug("Got NotFound Error: %s", e)
         except discord.Forbidden:
             await ctx.send("Missing permissions to pin here.")
-        except discord.HTTPException:
+        except discord.HTTPException as e:
             await ctx.send("Improper ID or link, please check the message ID is valid.")
+            logger.debug("Got HTTP Error: %s", e)
         except Exception as e:
-            await ctx.send(f"error occured: {e}")
+            await ctx.send(f"error occured, see console for details")
+            logger.exception("Got Error: %s", e)
 
 
     @commands.command()
