@@ -66,7 +66,7 @@ class pincog(commands.Cog):
                 return await ctx.send("Invalid link")
         # discord message ID's should always be 18 in length
         elif len(message_id) != 18:
-            return await ctx.send("Improper message ID length.")
+            return await ctx.send(f"Got incorrect ID length, check formatting.\n {len(message_id)} {message_id}")
         try:
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
@@ -76,7 +76,7 @@ class pincog(commands.Cog):
         except discord.Forbidden:
             await ctx.send("Missing permissions to pin here.")
         except discord.HTTPException:
-            await ctx.send("Improper ID or link, please check formatting.")
+            await ctx.send("Improper ID or link, please check the message ID is valid.")
         except Exception as e:
             print(f"error occured: {e}")
 
