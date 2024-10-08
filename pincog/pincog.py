@@ -4,9 +4,11 @@ from discord.ext import commands
 import discord.ext.commands
 from redbot.core import Config, commands, checks
 from redbot.core.bot import Red
+from red_commons.logging import getLogger
 
 import discord.ext
 
+logger = getLogger("red.volCogs.pincog")
 
 class pincog(commands.Cog):
     """A cog to allow non admins to pin messages via a settable role"""
@@ -71,8 +73,9 @@ class pincog(commands.Cog):
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
             await ctx.send(f"message {message_id} pinned")
-        except discord.NotFound:
+        except discord.NotFound as e:
             await ctx.send("Message not found.")
+            logger.exception("got %s", e)
         except discord.Forbidden:
             await ctx.send("Missing permissions to pin here.")
         except discord.HTTPException:
