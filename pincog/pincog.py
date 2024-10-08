@@ -64,8 +64,8 @@ class pincog(commands.Cog):
                 message_id = parts[-1]
             except IndexError:
                 return await ctx.send("Invalid link")
-        elif type(message_id) != int:
-            return await ctx.send("Improper format, use message link or ID.")
+        #elif type(message_id) != int:
+        #    return await ctx.send("Improper format, use message link or ID.")
         try:
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
@@ -73,7 +73,7 @@ class pincog(commands.Cog):
         except discord.NotFound:
             ctx.send("Message not found.")
         except discord.Forbidden:
-            await ctx.send("Missing permissons to pin here.")
+            await ctx.send("Missing permissions to pin here.")
 
     @commands.command()
     @commands.guild_only()
