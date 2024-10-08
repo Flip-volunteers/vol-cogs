@@ -78,7 +78,7 @@ class pincog(commands.Cog):
         except discord.HTTPException:
             await ctx.send("Improper ID or link, please check the message ID is valid.")
         except Exception as e:
-            print(f"error occured: {e}")
+            await ctx.send(f"error occured: {e}")
 
 
     @commands.command()
