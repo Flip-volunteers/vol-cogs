@@ -74,7 +74,7 @@ class pincog(commands.Cog):
             ctx.send("Message not found.")
         except discord.Forbidden:
             await ctx.send("Missing permissions to pin here.")
-        except discord.errors.HTTPException:
+        except discord.HTTPException:
             await ctx.send("Improper ID or link, please check formatting.")
         except Exception as e:
             print(f"error occured: {e}")
