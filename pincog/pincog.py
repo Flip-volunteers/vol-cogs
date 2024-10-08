@@ -72,7 +72,7 @@ class pincog(commands.Cog):
             await message.pin()
             await ctx.send(f"message {message_id} pinned")
         except discord.NotFound:
-            ctx.send("Message not found.")
+            await ctx.send("Message not found.")
         except discord.Forbidden:
             await ctx.send("Missing permissions to pin here.")
         except discord.HTTPException:
