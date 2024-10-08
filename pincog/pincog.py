@@ -4,9 +4,11 @@ from discord.ext import commands
 import discord.ext.commands
 from redbot.core import Config, commands, checks
 from redbot.core.bot import Red
+from red_commons.logging import getLogger
 
 import discord.ext
 
+logger = getLogger("red.volCogs.pincog")
 
 class pincog(commands.Cog):
     """A cog to allow non admins to pin messages via a settable role"""
@@ -64,16 +66,26 @@ class pincog(commands.Cog):
                 message_id = parts[-1]
             except IndexError:
                 return await ctx.send("Invalid link")
-        elif type(message_id) != int:
-            return await ctx.send("Improper format, use message link or ID.")
+        # discord message ID's should always be 19 in length
+        elif len(message_id) < 19:
+            logger.debug("%s was less than 19 digits long", message_id)
+            return await ctx.send(f"Got incorrect ID length, check formatting.")
         try:
             message = await ctx.channel.fetch_message(message_id)
             await message.pin()
             await ctx.send(f"message {message_id} pinned")
-        except discord.NotFound:
-            ctx.send("Message not found.")
+        except discord.NotFound as e:
+            await ctx.send("Message not found.")
+            logger.debug("Got NotFound Error: %s", e)
         except discord.Forbidden:
-            await ctx.send("Missing permissons to pin here.")
+            await ctx.send("Missing permissions to pin here.")
+        except discord.HTTPException as e:
+            await ctx.send("Improper ID or link, please check the message ID is valid.")
+            logger.debug("Got HTTP Error: %s", e)
+        except Exception as e:
+            await ctx.send(f"error occured, see console for details")
+            logger.exception("Got Error: %s", e)
+
 
     @commands.command()
     @commands.guild_only()
