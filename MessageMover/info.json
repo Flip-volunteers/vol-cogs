@@ -1,0 +1,9 @@
+{
+    "author" : ["volunteers"],
+    "install_msg" : "Message-mover installed!\nSee [p]help messagemover for commands",
+    "name" : "MessageMover",
+    "disabled" : false,
+    "short" : "Move messages bot commands",
+    "description" : "Allows moving of messages by non admins via bot role(s).",
+    "tags": ["utility"]
+}
