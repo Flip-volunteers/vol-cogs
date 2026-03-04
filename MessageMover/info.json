@@ -1,9 +1,9 @@
 {
     "author" : ["volunteers"],
-    "install_msg" : "Message-mover installed!\nSee [p]help messagemover for commands",
+    "install_msg" : "MessageMover installed!\nSee [p]help MessageMover for commands after loading the cog.\nAlso be sure to run [p]slash enablecog MessageMover\nthen run [p]slash sync",
     "name" : "MessageMover",
     "disabled" : false,
-    "short" : "Move messages bot commands",
+    "short" : "Move messages command",
     "description" : "Allows moving of messages by non admins via bot role(s).",
     "tags": ["utility"]
 }
