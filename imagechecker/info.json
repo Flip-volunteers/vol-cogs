@@ -1,6 +1,6 @@
 {
     "author" : ["volunteers"],
-    "install_msg" : "Imagechecker installed!\nSee [p]help imagechecker for commands after loading the cog.\nAlso be sure to run [p]slash enablecog MessageMover\nthen run [p]slash sync",
+    "install_msg" : "Imagechecker installed!\nSee **[p]help imagechecker** for commands after loading the cog.",
     "name" : "imagechecker",
     "disabled" : false,
     "short" : "check images for spam",
