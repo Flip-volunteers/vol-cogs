@@ -1,0 +1,10 @@
+{
+    "author" : ["volunteers"],
+    "install_msg" : "Imagechecker installed!\nSee [p]help imagechecker for commands after loading the cog.\nAlso be sure to run [p]slash enablecog MessageMover\nthen run [p]slash sync",
+    "name" : "imagechecker",
+    "disabled" : false,
+    "short" : "check images for spam",
+    "description" : "allows scanning for spam messages, ",
+    "requirements": ["pillow~=12.2.0", "imagehash~=4.3.2"],
+    "tags": ["utility", "antispam", "spam"]
+}
