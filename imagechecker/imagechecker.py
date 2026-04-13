@@ -234,7 +234,7 @@ class imagechecker(commands.Cog):
         embed = discord.Embed(
             title="🚫 Blacklisted Image Detected",
             color=discord.Color.red(),
-            description=f"**User:** {user.mention} ({user.id})\n**Time:** {time}\n\n**Note:** *First matching image displayed below.*"
+            description=f"**User:** {user.mention} ({user.id})\n**Time:** {time}\n"
         )
         embed.add_field(name="Action Applied:", value=f"**{punish_str}**", inline=False)
         embed.add_field(name="User Message:", value=text, inline=False)
