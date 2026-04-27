@@ -151,6 +151,47 @@ class imagechecker(commands.Cog):
             else:
                 await ctx.send("Hash not found.")
 
+    @commands.command()
+    @commands.guild_only()
+    @checks.mod_or_permissions(manage_messages=True)
+    async def addhashes(self, ctx, *, raw_hashes: str):
+        """
+        Add image hashes manually (one per line).
+        Checks Hamming distance against existing hashes before adding.
+        """
+        lines = raw_hashes.splitlines()
+        if not lines:
+            return await ctx.send("Please provide at least one hash.")
+
+        processing_log = []
+        stored_hashes = await self.config.guild(ctx.guild).image_hashes()
+        # Convert existing hex strings to hash objects for comparison
+        blacklisted_objects = [imagehash.hex_to_hash(h) for h in stored_hashes]
+        new_hashes_to_add = []
+
+        for raw_line in lines:
+            clean_hash_str = raw_line.strip()
+            if not clean_hash_str:
+                continue
+            try:
+                new_hash_obj = imagehash.hex_to_hash(clean_hash_str)
+
+                # Compare against current list + ones we just added in this loop
+                if any((new_hash_obj - bl_hash) <= 8 for bl_hash in blacklisted_objects):
+                    processing_log.append(f"SKIPPED | {clean_hash_str} (Duplicate/Similar)")
+                else:
+                    new_hashes_to_add.append(str(new_hash_obj))
+                    blacklisted_objects.append(new_hash_obj)
+                    processing_log.append(f"ADDED   | {clean_hash_str}")
+            except Exception:
+                processing_log.append(f"ERROR   | {clean_hash_str} (Invalid Format)")
+
+        if new_hashes_to_add:
+            async with self.config.guild(ctx.guild).image_hashes() as hashes:
+                hashes.extend(new_hashes_to_add)
+
+        await ctx.send(box("\n".join(processing_log), lang="ini"))
+
     # --- DETECTION LOGIC ---
 
     @commands.Cog.listener()
