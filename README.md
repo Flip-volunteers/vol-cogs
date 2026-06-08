@@ -12,3 +12,17 @@ This uses perceptual hashing to "see" image files uploaded and punish users if t
 
 From there, you can use the `[!]addimages` command combined with uploading image files to have it scan attached files and add them to the detection list.
 Only those with moderation or manage message permissions will be able to add/remove items to the detection system. 
+
+## MessageMover
+This is a simple Message Mover cog for red that allows moderators and anyone with a set role to "move" messages to another channel they have access to via a right click context menu action. 
+To do this, Redbot will need access to the ability to manage/remove webhooks in order to synthetically "clone" a user's message to another channel. 
+
+Quick and basic setup:
+1. `[!]repo add vol-cogs https://github.com/Flip-volunteers/vol-cogs`
+2. `[!]cog install vol-cogs MessageMover`
+3. `[!]load MessageMover`
+4. `[!]slash enablecog MessageMover`
+5. `[!]slash sync`
+6. `[!]moveset addrole RoleIDHere` swapping RoleIDHere with whatever discord role should be able to move messages. 
+
+After about a minute or so, the new setting should be visible when you right click a message, under the "apps" section of the context menu. 
