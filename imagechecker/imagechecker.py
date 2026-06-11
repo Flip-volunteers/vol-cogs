@@ -14,7 +14,10 @@ from typing import Literal
 logger = getLogger("red.volCogs.imagechecker")
 
 class imagechecker(commands.Cog):
-    """A cog to filter images against hashes of spam images using native timeouts."""
+    """A cog to filter images against hashes of spam images and applying timeouts or bans.\n
+    See the [**Github page**](<https://github.com/Flip-volunteers/vol-cogs>) for quick start setup.\n
+    Config commands can now be found under the `imgcheckcmds` command.
+    """
 
     def __init__(self, bot):
         self.bot = bot
@@ -27,9 +30,15 @@ class imagechecker(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
-    # --- SETTINGS & CHECK COMMANDS ---
+    # --- SETTINGS & CHECK SUBCOMMANDS ---
 
-    @commands.command()
+    @commands.group(invoke_without_subcommand=True)
+    @commands.guild_only()
+    @checks.mod_or_permissions(manage_messages=True)
+    async def imgcheckcmds(self, ctx):
+        """Commands for image checker settings and checks."""
+
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def showhashes(self, ctx):
@@ -41,7 +50,7 @@ class imagechecker(commands.Cog):
         for page in pagify(output):
             await ctx.send(box(page, lang="text"))
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def hashcheckimages(self, ctx):
@@ -62,7 +71,7 @@ class imagechecker(commands.Cog):
                 results.append(f"{attachment.filename}: Skipped (unsupported format).")
         await ctx.send(box("\n".join(results), lang="yaml"))
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def checkmodlogchannel(self, ctx):
@@ -76,7 +85,7 @@ class imagechecker(commands.Cog):
         else:
             await ctx.send("The configured modlog channel no longer exists.")
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def setmodlogchannel(self, ctx, channel: discord.TextChannel):
@@ -84,18 +93,18 @@ class imagechecker(commands.Cog):
         await self.config.guild(ctx.guild).modlog_channel.set(channel.id)
         await ctx.send(f"Modlog channel has been set to {channel.mention}")
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def setpunish(self, ctx, action: Literal["ban", "timeout"], duration: commands.parse_timedelta = None):
-        """Set the punishment on detection (e.g., !setpunish timeout 1h)"""
+        """Set the punishment on detection (e.g., !imgcheckcmds setpunish timeout 1h)"""
         await self.config.guild(ctx.guild).punish_action.set(action)
         seconds = int(duration.total_seconds()) if duration else 0
         await self.config.guild(ctx.guild).punish_duration.set(seconds)
         time_msg = f"for {duration}" if duration else "permanently"
         await ctx.send(f"Punishment set to **{action}** {time_msg}.")
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def checkpunish(self, ctx):
@@ -139,10 +148,10 @@ class imagechecker(commands.Cog):
 
         await ctx.send(box("\n".join(processing_log), lang="ini"))
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
-    async def hashremove(self, ctx, hash_to_remove: str):
+    async def drophashes(self, ctx, hash_to_remove: str):
         """Remove a specific image hash from the blocklist."""
         async with self.config.guild(ctx.guild).image_hashes() as hashes:
             if hash_to_remove in hashes:
@@ -151,13 +160,13 @@ class imagechecker(commands.Cog):
             else:
                 await ctx.send("Hash not found.")
 
-    @commands.command()
+    @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def addhashes(self, ctx, *, raw_hashes: str):
         """
-        Add image hashes manually (one per line).
-        Checks Hamming distance against existing hashes before adding.
+        Add image multiple hashes manually (one per line).
+        Auto checks Hamming distance against existing hashes before adding.
         """
         lines = raw_hashes.splitlines()
         if not lines:

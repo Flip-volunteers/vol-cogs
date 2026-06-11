@@ -1,10 +1,11 @@
 {
-    "author" : ["volunteers"],
-    "install_msg" : "Imagechecker installed!\nSee **[p]help imagechecker** for commands after loading the cog.",
+    "author" : ["volunteers", "axum"],
+    "install_msg" : "Imagechecker installed!\nSee **[p]help imagechecker** for commands after loading the cog. `[p]help imgcheckcmds` for config and other useful commands. \nSee the [**Github page**](<https://github.com/Flip-volunteers/vol-cogs>) for quick start setup.",
     "name" : "imagechecker",
     "disabled" : false,
-    "short" : "check images for spam",
-    "description" : "allows scanning for spam messages, ",
+    "short" : "check images for spam via a settable list",
+    "description" : "Allows one to upload images to a filter in order to scan and block similar images uploaded from users.",
     "requirements": ["pillow~=12.2.0", "imagehash~=4.3.2"],
-    "tags": ["utility", "antispam", "spam"]
+    "min_bot_version": "3.5.17",
+    "tags": ["utility", "antispam", "spam", "moderation"]
 }
