@@ -1,5 +1,5 @@
 # vol-cogs
-Useful cogs made by volunteers
+Useful cogs made by Flip-volunteers group.
 
 # Main cogs
 ## Imagechecker
