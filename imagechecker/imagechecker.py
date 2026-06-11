@@ -119,7 +119,7 @@ class imagechecker(commands.Cog):
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
     async def addimages(self, ctx):
-        """Add images to the blocklist."""
+        """Add uploaded image(s) connected to this command to the blocklist."""
         if not ctx.message.attachments:
             return await ctx.send("Please upload at least one image.")
 
@@ -145,20 +145,32 @@ class imagechecker(commands.Cog):
                     processing_log.append(f"ERROR   | {attachment.filename}")
             else:
                 processing_log.append(f"IGNORED | {attachment.filename}")
-
         await ctx.send(box("\n".join(processing_log), lang="ini"))
 
     @imgcheckcmds.command()
     @commands.guild_only()
     @checks.mod_or_permissions(manage_messages=True)
-    async def drophashes(self, ctx, hash_to_remove: str):
-        """Remove a specific image hash from the blocklist."""
-        async with self.config.guild(ctx.guild).image_hashes() as hashes:
-            if hash_to_remove in hashes:
-                hashes.remove(hash_to_remove)
-                await ctx.send(f"Successfully removed hash `{hash_to_remove}`.")
-            else:
-                await ctx.send("Hash not found.")
+    async def drophashes(self, ctx, *, raw_hashes: str):
+        """Remove multiple image hashes from the blocklist (one per line)."""
+        lines = raw_hashes.splitlines()
+        if not any(line.strip() for line in lines):
+            return await ctx.send("Please provide at least one hash.")
+
+        processing_log = []
+        stored_hashes = await self.config.guild(ctx.guild).image_hashes()
+
+        for raw_line in lines:
+            clean_hash_str = raw_line.strip()
+            if not clean_hash_str:
+                continue
+            async with self.config.guild(ctx.guild).image_hashes() as hashes:
+                if clean_hash_str in hashes:
+                    hashes.remove(clean_hash_str)
+                    processing_log.append(f"REMOVED   | {clean_hash_str}")
+                else:
+                    processing_log.append(f"NOT FOUND | {clean_hash_str}")
+
+        await ctx.send(box("\n".join(processing_log), lang="ini"))
 
     @imgcheckcmds.command()
     @commands.guild_only()
