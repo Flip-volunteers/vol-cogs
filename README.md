@@ -20,11 +20,12 @@ This is a simple Message Mover cog for red that allows moderators and anyone wit
 To do this, Redbot will need access to the ability to manage/remove webhooks in order to synthetically "clone" a user's message to another channel. 
 
 Quick and basic setup:
+1. Be sure that the bot has **Manage Webhooks**, **Manage Messages**, and **Manage Channels** permissions. 
 1. `[p]repo add vol-cogs https://github.com/Flip-volunteers/vol-cogs`
-2. `[p]cog install vol-cogs MessageMover`
-3. `[p]load MessageMover`
-4. `[p]slash enablecog MessageMover`
-5. `[p]slash sync`
-6. `[p]moveset addrole RoleIDHere` swapping RoleIDHere with whatever discord role should be able to move messages. 
+1. `[p]cog install vol-cogs MessageMover`
+1. `[p]load MessageMover`
+1. `[p]slash enablecog MessageMover`
+1. `[p]slash sync`
+1. `[p]moveset addrole RoleIDHere` swapping RoleIDHere with whatever discord role should be able to move messages. 
 
 After about a minute or so, the new setting should be visible when you right click a message, under the "apps" section of the context menu. 

@@ -1,9 +1,0 @@
-{
-    "author" : ["volunteers"],
-    "install_msg" : "Pincog installed!\nSee [p]help pincog for commands",
-    "name" : "pincog",
-    "disabled" : false,
-    "short" : "Pins messages using bot commands",
-    "description" : "Allows pinning of messages by non admins via bot role.",
-    "tags": ["pins", "utility"]
-}
