@@ -141,3 +141,38 @@ class MessageMover(commands.Cog):
 
         view = MoveMessageView(message, interaction.user)
         await interaction.response.send_message(content="**Move Message**\nStep 1: Select a Category", view=view, ephemeral=True)
+
+    @commands.group()
+    @commands.admin_or_permissions(manage_guild=True)
+    async def moveset(self, ctx):
+        """Settings for MessageMover."""
+        pass
+
+    @moveset.command()
+    async def addrole(self, ctx, role: discord.Role):
+        """Add a role allowed to use the Move Message context menu."""
+        async with self.config.guild(ctx.guild).allowed_roles() as roles:
+            if role.id not in roles:
+                roles.append(role.id)
+                await ctx.send(f"✅ {role.name} can now move messages.")
+            else:
+                await ctx.send("That role is already on the list.")
+
+    @moveset.command()
+    async def remrole(self, ctx, role: discord.Role):
+        """Remove a role from the allowed list."""
+        async with self.config.guild(ctx.guild).allowed_roles() as roles:
+            if role.id in roles:
+                roles.remove(role.id)
+                await ctx.send(f"❌ {role.name} removed from allowed roles.")
+            else:
+                await ctx.send("That role wasn't in the list.")
+
+    @moveset.command()
+    async def list(self, ctx):
+        """List all roles allowed to move messages."""
+        roles_ids = await self.config.guild(ctx.guild).allowed_roles()
+        if not roles_ids:
+            return await ctx.send("No specific roles configured. Only users with `Manage Messages` can use this.")
+        role_names = [ctx.guild.get_role(rid).name for rid in roles_ids if ctx.guild.get_role(rid)]
+        await ctx.send(f"**Allowed Roles:** {', '.join(role_names)}")
