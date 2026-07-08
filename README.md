@@ -26,6 +26,6 @@ Quick and basic setup:
 1. `[p]load MessageMover`
 1. `[p]slash enablecog MessageMover`
 1. `[p]slash sync`
-1. `[p]moveset addrole RoleIDHere` swapping RoleIDHere with whatever discord role should be able to move messages. 
+1. `[p]moveset addrole RoleIDHere` swapping RoleIDHere with whatever discord role should be able to move messages. By default admins and those with "manage messages" permissions can move messages. 
 
 After about a minute or so, the new setting should be visible when you right click a message, under the "apps" section of the context menu. 
