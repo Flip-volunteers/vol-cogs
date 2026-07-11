@@ -7,6 +7,7 @@ from PIL import Image
 from redbot.core import Config
 from redbot.core import commands, modlog, checks
 from redbot.core.utils.chat_formatting import pagify, box
+from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.chat_formatting import humanize_timedelta
 from red_commons.logging import getLogger
 from typing import Literal
@@ -211,7 +212,21 @@ class imagechecker(commands.Cog):
             async with self.config.guild(ctx.guild).image_hashes() as hashes:
                 hashes.extend(new_hashes_to_add)
 
-        await ctx.send(box("\n".join(processing_log), lang="ini"))
+        full_log = "\n".join(processing_log)
+        chunks = list(pagify(full_log, delims=["\n"], page_length=1000))
+        total_pages = len(chunks)
+        pages = []
+        for i, chunk in enumerate(chunks):
+            embed = discord.Embed(
+                description=f"```ini\n{chunk}\n```",
+                color=await ctx.embed_color()
+            )
+            embed.set_footer(text=f"Page {i + 1}/{total_pages}")
+            pages.append(embed)
+
+        # Pass the list of pages to the menu
+        await menu(ctx, pages, DEFAULT_CONTROLS)
+
 
     # --- DETECTION LOGIC ---
 
